@@ -3,3 +3,5 @@
 
 # Ignore .env files in all subdirectories
 **/.env
+
+**/build/
