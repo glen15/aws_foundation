@@ -25,11 +25,12 @@ exports.handler = async (event) => {
         // OpenAI API 호출
         const completion = await openai.chat.completions.create({
             messages: [
-                { role: "system", content: "Your are expert in AWS, Tell me one AWS service names that I can learn additionally based on the data sent by the user. as one sentence in Korean" },
+                { role: "system", content: "Your are expert in AWS, Tell me one AWS service names that I can learn additionally based on the data sent by the user.  in Korean" },
+                // { role: "system", content: "Your are expert in AWS, Tell me one AWS service names that I can learn additionally based on the data sent by the user. as one sentence in Korean" },
                 { role: "user", content: userMessage }
             ],
             model: "gpt-3.5-turbo",
-            max_tokens: 100,
+            max_tokens: 1000,
         });
 
         const aiResponse = completion.choices[0].message.content;
