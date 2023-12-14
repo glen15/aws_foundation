@@ -1,6 +1,7 @@
 import React from 'react';
 import { ChakraProvider, extendTheme, Box, Text, VStack, Link, Container, Flex, useBreakpointValue } from '@chakra-ui/react';
-import { Bar, Doughnut } from 'react-chartjs-2';
+import { Bar, Doughnut, Pie } from 'react-chartjs-2';
+import 'chart.js/auto';
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -152,6 +153,7 @@ const Contact = () => (
     <Text fontSize="2xl" fontWeight="semibold">연락처</Text>
     <Link href="mailto:example@example.com" color="blue.500">example@example.com</Link>
     <Text>Phone: 010-1234-5678</Text>
+    <Link href="https://github.com//yourgithubid" isExternal color="blue.500">Github: yourid</Link>
     <Link href="https://linkedin.com/in/yourprofile" isExternal color="blue.500">LinkedIn: yourprofile</Link>
   </VStack>
 );
@@ -200,7 +202,33 @@ const LearningProgressChart = () => {
         display: true,
         text: '학습 진행 상황',
       },
+      tooltip: {
+        callbacks: {
+          label: function(context) {
+            let label = context.label || '';
+            if (label) {
+              label += ': ';
+            }
+            if (context.parsed !== null) {
+              label += context.parsed + '%';
+            }
+            return label;
+          }
+        }
+      }
     },
+    hover: {
+      mode: 'index',
+      intersect: false,
+      onHover: function(event, elements) {
+        event.native.target.style.cursor = elements.length ? 'pointer' : 'default';
+      }
+    },
+    elements: {
+      arc: {
+        hoverOffset: 100 // 호버 시 차트 요소 확대
+      }
+    }
   };
 
   return <Doughnut data={data} options={options} />;
@@ -222,11 +250,38 @@ const ProjectContributionChart = () => {
     plugins: {
       title: {
         display: true,
-        text: '프로젝트 기여도',
+        text: '프로젝트 기여',
       },
+      tooltip: {
+        callbacks: {
+          label: function(context) {
+            let label = context.label || '';
+            if (label) {
+              label += ': ';
+            }
+            if (context.parsed !== null) {
+              label += context.parsed + '%';
+            }
+            return label;
+          }
+        }
+      }
     },
+    hover: {
+      mode: 'index',
+      intersect: false,
+      onHover: function(event, elements) {
+        event.native.target.style.cursor = elements.length ? 'pointer' : 'default';
+      }
+    },
+    elements: {
+      arc: {
+        hoverOffset: 100 // 호버 시 차트 요소 확대
+      }
+    }
   };
+    
 
-  return <Doughnut data={data} options={options} />;
+  return <Pie data={data} options={options} />;
 };
 export default App;
