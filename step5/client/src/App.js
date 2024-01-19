@@ -6,7 +6,16 @@ function App() {
   const [newNote, setNewNote] = useState('');
 
   useEffect(() => {
+    // 페이지 로드 시 데이터를 불러옵니다.
     fetchNotes();
+
+    // 10초마다 페이지 새로고침 타이머 설정
+    const interval = setInterval(() => {
+      fetchNotes();
+    }, 10000); // 10초 = 10000밀리초
+
+    // 컴포넌트가 언마운트될 때 타이머를 정리합니다.
+    return () => clearInterval(interval);
   }, []);
 
   const fetchNotes = () => {
@@ -37,7 +46,7 @@ function App() {
   };
 
   const requestAIAdvice = (userNote) => {
-    fetch(`${process.env.REACT_APP_API_URL}`, {
+    fetch(`${process.env.REACT_APP_API_URL}/ainotes`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ content: userNote }),
@@ -64,18 +73,21 @@ function App() {
 
       <h2>내 학습 기록</h2>
       <div>
-        {notes.map(note => (
-          <div key={note.id} className="note">
-            <button onClick={() => deleteNote(note.id)}>삭제</button>
-            <div><strong>사용자 메모:</strong> {note.user_note}</div>
-            {note.ai_note ? (
-              <div><strong>AI 추천 학습 내용:</strong> {note.ai_note}</div>
-            ) : (
-              <button onClick={() => requestAIAdvice(note.user_note, note.id)}>AI 조언 요청</button>
-            )}
-          </div>
-        ))}
-      </div>
+          {notes.map(note => (
+            <div key={note.id} className="note">
+              <div className="note-content"><strong>사용자 메모:</strong> {note.user_note}</div>
+              {note.ai_note ? (
+                <div className="ai-note"><strong>AI 추천 학습 내용:</strong> {note.ai_note}</div>
+              ) : null}
+              <div className="note-actions">
+                {!note.ai_note && (
+                  <button onClick={() => requestAIAdvice(note.user_note, note.id)}>AI 조언 요청</button>
+                )}
+                <button onClick={() => deleteNote(note.id)}>삭제</button>
+              </div>
+            </div>
+          ))}
+        </div>
     </div>
   );
 }

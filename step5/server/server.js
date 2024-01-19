@@ -34,8 +34,7 @@ db.connect((err) => {
     });
 });
 
-// 메모 추가 요청 처리
-app.post('/notes', (req, res) => {
+app.post('/ainotes', (req, res) => {
     const userMessage = req.body.content;
     console.log(`입력받은 내용 : ${userMessage}`)
     if (!userMessage) {
@@ -50,10 +49,28 @@ app.post('/notes', (req, res) => {
         .catch(error => {
             
         });
+});
+
+// 메모 추가 요청 처리
+app.post('/notes', (req, res) => {
+    const userMessage = req.body.content;
+    console.log(`입력받은 내용 : ${userMessage}`)
+    if (!userMessage) {
+      return res.status(400).json({ error: '내용을 입력해주세요' });
+    }
+
+    // Lambda 함수 호출 (비동기 처리)
+    // axios.post(process.env.API_GATEWAY_URL, { content: userMessage })
+    //     .then(response => {
+    //         console.log('Lambda 응답:', response.data);
+    //     })
+    //     .catch(error => {
+            
+    //     });
 
     // 데이터베이스에 사용자 메모 저장
-    const sql = 'INSERT INTO notes (user_note, ai_note) VALUES (?, ?)';
-    const values = [userMessage, 'ai 답변 대기중, 잠시 후 새로고침 해보세요.'];
+    const sql = 'INSERT INTO notes (user_note) VALUES (?)';
+    const values = [userMessage];
 
     db.query(sql, values, (err, result) => {
         if (err) {

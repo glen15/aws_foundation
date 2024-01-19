@@ -55,3 +55,21 @@ margin-bottom: 20px; /* 메모들 사이의 상하 간격 조정 */
 .note-container button {
   margin-right: 10px;
 }
+
+.note {
+  margin-bottom: 15px; /* 각 노트 사이의 간격 */
+}
+
+.note-content, .ai-note {
+  margin-bottom: 10px; /* 내용과 버튼 사이의 간격 */
+}
+
+.note-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start; /* 버튼을 왼쪽 정렬 */
+}
+
+.note-actions button {
+  margin-right: 10px; /* 버튼 사이의 간격 */
+}
