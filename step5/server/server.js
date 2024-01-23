@@ -48,7 +48,7 @@ app.post("/ainotes", (req, res) => {
 
   // Lambda 함수 호출 (비동기 처리)
   axios
-    .post(process.env.API_GATEWAY_URL, { content: userMessage })
+    .post(process.env.LAMBDA_URL, { content: userMessage })
     .then((response) => {
       console.log("Lambda 응답:", response.data);
     })
